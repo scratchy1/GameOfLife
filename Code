@@ -1,0 +1,97 @@
+package gameOfLife;
+
+public class GameOfLife {
+    boolean[][] feld = { { false, false, false, false, false }, { false, false, true, false, false },
+            { false, false, true, false, false }, { false, false, true, false, false },
+            { false, false, false, false, false } };
+
+    public static void main(String[] args) {
+        GameOfLife myGame = new GameOfLife();
+        for (int i = 0; i < 10; i++) {
+            myGame.nextGeneration();
+            myGame.print();
+            System.out.println();
+        }
+    }
+
+    void print() {
+        for (int i = 0; i < feld.length; i++) {
+            for (int j = 0; j < feld[i].length; j++) {
+                if (feld[i][j] == true)
+                    System.out.print("o ");
+                else
+                    System.out.print(". ");
+            }
+            System.out.println();
+        }
+    }
+
+    void nextGeneration() {
+        /*
+         * 1 Eine lebende Zelle lebt auch in der Folgegeneration, wenn genau zwei oder
+         * drei der acht benachbarten Zellen in der aktuellen Generation leben.  2 Eine
+         * lebende Zelle stirbt in der Folgegeneration an Einsamkeit oder
+         * Überbevölkerung, wenn in der aktuellen Generation weniger als zwei oder mehr
+         * als drei der acht Nachbarzellen leben.  3 Eine tote Zelle wird in der
+         * Folgegeneration lebendig, wenn genau drei ihrer acht Nachbarn in der
+         * aktuellen Generation lebendig sind.  4 Unabhängig von den obigen drei Regeln
+         * sind die Randzellen (also diejenigen Zellen, die nicht genau acht Nachbarn
+         * haben) immer tot. Da Sie für die Berechnung aller Zellen der Folgegeneration
+         * noch Zugriff auf die Zustände der aktuellen Generation benötigen, sollten Sie
+         * die Zustände der Folgegeneration zunächst in ein neues, zweidimensionales
+         * boolean-Array gleicher Gröÿe schreiben.  Ihre Implementierung sollte nach
+         * Möglichkeit unabhängig von der Grösse der Zellkultur funktionieren; Sie
+         * dürfen aber von einer rechteckigen Zellkultur ausgehen.
+         */
+
+        boolean[][] feld2 = new boolean[feld.length][];
+
+        for (int s = 0; s < feld.length; s++) {
+            // boolean[] nachbarn = new boolean[feld.length];
+            // feld2[s] = nachbarn;//besser:
+            feld2[s] = new boolean[feld.length];
+
+            System.out.println();
+        }
+
+        //int anzahllebendnachbarn = 0;
+
+        // anzahllebendnachbarnüberprüfung
+
+        for (int u = 1; u < feld2.length - 1; u++) {
+            for (int v = 1; v < feld2[u].length - 1; v++) {
+                int anzahllebendnachbarn = 0;
+                boolean[] arr = { feld[u + 1][v], feld[u][v + 1], feld[u + 1][v + 1], feld[u - 1][v], feld[u][v - 1],
+                        feld[u - 1][v - 1], feld[u - 1][v + 1], feld[u + 1][v - 1] };
+                
+                for (boolean elem : arr) {
+                    
+                    if (elem == true) {
+                        
+                        anzahllebendnachbarn = anzahllebendnachbarn + 1;
+
+                    }
+                }
+                if (anzahllebendnachbarn < 4 && anzahllebendnachbarn > 1 && feld[u][v] == true) {
+                    feld2[u][v] = true;
+                    
+                }
+                if (feld[u][v] == false && anzahllebendnachbarn == 3) {// 3.Bedingung
+                    feld2[u][v] = true;
+
+                }
+                if ((anzahllebendnachbarn == 2 || anzahllebendnachbarn == 3) && (feld[u][v] == true)) {// 1.Bedingung
+                    feld2[u][v] = true;
+
+                }
+                if ((anzahllebendnachbarn < 2 || anzahllebendnachbarn > 3) && (feld[u][v] == true)) {// 2.Bedingung
+                    feld2[u][v] = false;
+
+                }
+            }
+        }
+        // hier code eingeben
+        // this.feld=feld2; besser
+        feld = feld2;
+    }
+}
